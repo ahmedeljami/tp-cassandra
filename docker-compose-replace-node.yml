@@ -1,0 +1,66 @@
+version: '3.8' 
+networks: 
+  cassandra: 
+services: 
+  cassandra1: 
+    image: cassandra:4.0.13 
+    container_name: cassandra1 
+    hostname: cassandra1 
+    networks: 
+      - cassandra 
+    ports: 
+      - "9042:9042"
+     - "7199:7199"
+    environment:  
+        CASSANDRA_SEEDS: "cassandra1"   
+        CASSANDRA_CLUSTER_NAME: cluster1 
+        CASSANDRA_DC: dc1 
+        CASSANDRA_RACK: rack1 
+        CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch 
+        CASSANDRA_NUM_TOKENS: 128
+  cassandra2: 
+    image: cassandra:4.0.13 
+    container_name: cassandra2 
+    hostname: cassandra2 
+    networks: 
+      - cassandra 
+    ports: 
+      - "9043:9042" 
+      - "7180:7199"
+    environment:  
+        CASSANDRA_SEEDS: "cassandra1"   
+        CASSANDRA_CLUSTER_NAME: cluster1 
+        CASSANDRA_DC: dc2 
+        CASSANDRA_RACK: rack1 
+        CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch 
+        CASSANDRA_NUM_TOKENS: 128
+  cassandra4: 
+    image: cassandra:4.0.13 
+    container_name: cassandra4 
+    hostname: cassandra4 
+    networks: 
+      - cassandra 
+    ports: 
+      - "9044:9042"
+      - "7181:7199"      
+    environment:  
+        CASSANDRA_SEEDS: "cassandra1"   
+        CASSANDRA_CLUSTER_NAME: cluster1 
+        CASSANDRA_DC: dc3 
+        CASSANDRA_RACK: rack1 
+        CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch 
+        CASSANDRA_NUM_TOKENS: 128  
+    volumes:
+      - ./cassandra-env.sh:/etc/cassandra/cassandra-env.sh        
+  reaper-in-memory:
+    image: thelastpickle/cassandra-reaper:latest
+    container_name: reaper-in-memory
+    environment:
+        - REAPER_STORAGE_TYPE=memory
+    networks: 
+      - cassandra         
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ./data/reaper:/var/log/cassandra-reaper
