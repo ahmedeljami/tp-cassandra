@@ -26,7 +26,7 @@ table_definition: |
 columnspec:
   - name: weather_station_id
     size: fixed(2)
-    population: uniform(1..600)  # We have about 200 stations
+    population: uniform(1..99)  # We have about 99 stations
   - name: year
     size: fixed(4)
     population: uniform(1..5) # we track temperatures for only 5 years
@@ -55,5 +55,5 @@ queries:
       cql: select * from weather_data where weather_station_id = ? and year = ?
       fields: samerow             # pick selection values from same row in partition
    get-a-value:
-      cql: select * from weather_data where weather_station_id = ? and year = ?
+      cql: select * from weather_data where weather_station_id = ? and year = ? and day_of_year = ? and time = ? and  sensor_id = ?
       fields: samerow             # pick selection values from same row in partition
