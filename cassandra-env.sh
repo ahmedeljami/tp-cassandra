@@ -305,5 +305,5 @@ if [ "x$MX4J_PORT" != "x" ]; then
 fi
 
 JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
-JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=address_of_dead_node"
-#JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=172.21.0.5"
+JVM_OPTS="$JVM_OPTS -Dcassandra.replace_address=172.18.0.4"
+
